@@ -1,0 +1,36 @@
+% Probabilities of the messages
+probabilities = [0.4, 0.3, 0.15, 0.1, 0.05];
+symbols = {'X1', 'X2', 'X3', 'X4', 'X5'};
+
+% Display initial probabilities
+disp('Initial probabilities:');
+disp(array2table(probabilities, 'VariableNames', symbols));
+
+% Huffman Encoding
+[dict, avg_length] = huffmandict(symbols, probabilities);
+disp('Generated Huffman Code:');
+disp(dict);
+% Calculate entropy
+entropy = -sum(probabilities .* log2(probabilities));
+disp('entropy');
+disp(entropy);
+
+% Average code length
+disp('avg len');
+disp(avg_length);
+
+% Efficiency and redundancy
+efficiency = entropy / avg_length;
+redundancy = 1 - efficiency;
+disp('efficiency');
+disp(efficiency);
+disp('redundancy');
+disp(redundancy);
+
+code_lengths = cellfun(@length, dict(:,2));
+variance = 0;
+for i = 1:length(symbols)
+    variance = variance + probabilities(i) * (code_lengths(i) - avg_length)^2;
+end
+disp('varince');
+disp(variance);
