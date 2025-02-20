@@ -1,0 +1,23 @@
+clc;
+clear;
+close all;
+
+% Define parameters
+n = 7; % Codeword length
+k = 4; % Message length
+gen_poly = [1 1 0 1]; % Generator polynomial x^3 + x + 1
+
+% Message to be encoded
+msg = [1 0 1 0]; % Example 4-bit message
+disp('Original Message:');
+disp(msg);
+
+% Perform cyclic encoding
+codeword = encode(msg, n, k, 'cyclic', gen_poly);
+disp('Encoded Codeword:');
+disp(codeword);
+
+% Perform cyclic decoding
+[decoded_msg, err] = decode(codeword, n, k, 'cyclic', gen_poly);
+disp('Decoded Message:');
+disp(decoded_msg);
