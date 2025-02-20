@@ -1,0 +1,38 @@
+k = input('Enter the length of the message word (k): ');
+n = input('Enter the length of the codeword (n): ');
+disp('Enter the parity matrix P (size k x (n-k)):');
+P = input(' ');
+
+
+G = [P eye(k)]; % Generator matrix
+
+num_messages = 2^k; 
+messages = de2bi(0:num_messages-1, k, 'left-msb');
+disp(messages);
+codewords = mod(messages * G, 2);
+
+disp(codewords);
+H = [eye(n-k) P']; 
+
+received_codeword = input('Enter the received codeword (row vector of length n): ');
+
+syndrome = mod(received_codeword * H', 2);
+disp(syndrome);
+if all(syndrome == 0)
+    disp('The received codeword is valid (no errors detected).');
+else
+    disp('The received codeword contains errors.');
+    
+    [~, row] = ismember(syndrome, H', 'rows'); % Match syndrome with a row in H'
+    
+    if row > 0
+        disp(['The syndrome matches row ', num2str(row), ' of H''.']);
+        
+        corrected_codeword = received_codeword;
+        corrected_codeword(row) = mod(corrected_codeword(row) + 1, 2); % Flip the bit
+        disp('The corrected codeword is:');
+        disp(corrected_codeword);
+    else
+        disp('Error: Syndrome does not match any row in H''. Error cannot be corrected.');
+    end
+end
