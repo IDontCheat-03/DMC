@@ -1,0 +1,14 @@
+clc; clear all;
+message = input('Enter the message bits as a binary vector: ');
+trellis = poly2trellis([3], [7, 5]); 
+num_states = 2^(trellis.numInputSymbols-1);
+padded_message = [message, zeros(1, trellis.numInputSymbols)];
+encoded_bits = convenc(padded_message, trellis);
+disp('Original message:');
+disp(message);
+disp('Padded message:');
+disp(padded_message);
+disp('Encoded bits:');
+disp(encoded_bits);
+
+
